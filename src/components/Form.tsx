@@ -1,0 +1,54 @@
+import React, { useState } from "react"
+
+interface Props{
+    setValueEmoji:React.Dispatch<React.SetStateAction<string>>
+    toggleDarkMode:() => void;
+    darkMode: boolean;
+}
+
+const Form:React.FC <Props>= ({setValueEmoji, toggleDarkMode, darkMode}) => {
+
+    const [value, setValue] = useState('');
+    const [error, setError] = useState(false);
+    
+    const handleSearch = (e:React.FormEvent) =>{
+        e.preventDefault();
+        if(value === ""){
+            setError(true)
+            setTimeout(() => {
+                setError(false)
+            }, 1000);
+            return
+        }
+        setValueEmoji(value);
+        console.log(value);
+    }
+
+    const allEmojis = () => {
+        setValueEmoji('')
+    }
+
+  return (
+    <section className={`form ${darkMode ? "dark-mode": ""}`}>
+      <form onSubmit={handleSearch}>
+        <input 
+        type="text" 
+        placeholder="some emoji word"
+        onChange={e => setValue(e.target.value)}
+         />
+         <button
+            type="button"
+            onClick={allEmojis}
+         >
+            All
+         </button>
+         <div className="toggle-box" onClick={toggleDarkMode}>
+            <div className="toggle-circle"></div>
+         </div>
+      </form>
+      {error && <p className="error">Input is empy</p>}
+    </section>
+  )
+}
+
+export default Form
